@@ -1,0 +1,32 @@
+pipeline {
+    agent {
+        docker {
+            image 'maven:3.8.4'
+            args '-v $HOME/.m2:/root/.m2'
+        }
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    sh 'mvn test'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up or other post-build tasks
+        }
+    }
+}
